@@ -1,0 +1,617 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+
+/* ============================================
+   COFFEE BRAND — GLOBAL STYLES
+   Palette extracted from frames: deep browns,
+   warm creams, rich blacks
+   ============================================ */
+
+:root {
+  --color-black:      #0a0705;
+  --color-dark:       #1a1008;
+  --color-brown:      #3d1f0a;
+  --color-mid:        #7a4518;
+  --color-gold:       #c8882a;
+  --color-cream:      #f0e0c0;
+  --color-light:      #faf5ee;
+  --color-white:      #ffffff;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles this */
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-black);
+}
+
+/* ---- Loading spinner ---- */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--color-black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-bar-wrap {
+  width: 200px;
+  height: 2px;
+  background: rgba(200,136,42,0.2);
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.loading-bar {
+  height: 100%;
+  background: var(--color-gold);
+  transition: width 0.3s ease;
+}
+
+.loading-text {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+}
+
+/* ---- Utility ---- */
+.section-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 1.5rem 2rem;
+  transition: background 0.4s ease, padding 0.4s ease;
+}
+
+.navbar--scrolled {
+  background: rgba(10, 7, 5, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(200,136,42,0.1);
+}
+
+.navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: var(--color-cream);
+  text-decoration: none;
+}
+
+.logo-mark {
+  color: var(--color-gold);
+  font-size: 1.3rem;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem;
+}
+
+.nav-links a {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: rgba(240,224,192,0.7);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover { color: var(--color-gold); }
+
+.nav-cta {
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-black);
+  background: var(--color-gold);
+  padding: 0.6rem 1.4rem;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+.nav-cta:hover { background: var(--color-cream); }
+
+/* ============================================
+   CINEMATIC SECTION
+   ============================================ */
+.cinematic-section {
+  position: relative;
+}
+
+.cinematic-sticky {
+  position: sticky; /* GSAP pin overrides this */
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cinematic-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cinematic-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 50%, rgba(10,7,5,0.7) 100%),
+    linear-gradient(to bottom, rgba(10,7,5,0.3) 0%, transparent 20%, transparent 80%, rgba(10,7,5,0.6) 100%);
+  pointer-events: none;
+}
+
+.cinematic-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.6s ease;
+}
+
+.cinematic-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  color: var(--color-cream);
+  text-transform: uppercase;
+}
+
+.cinematic-center {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.cinematic-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.2rem, 3vw, 2.2rem);
+  color: var(--color-cream);
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.4s ease;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--color-gold), transparent);
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.1); }
+}
+
+.scroll-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(240,224,192,0.6);
+}
+
+/* Progress bar */
+.cinematic-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(200,136,42,0.15);
+}
+
+.cinematic-progress-fill {
+  height: 100%;
+  background: var(--color-gold);
+  transition: width 0.05s linear;
+}
+
+/* ============================================
+   SHARED SECTION STYLES
+   ============================================ */
+.section-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--color-cream);
+  margin-bottom: 1.5rem;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--color-gold);
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero-section {
+  padding: 10rem 2rem 8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(ellipse, rgba(61,31,10,0.4) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1.0;
+  color: var(--color-cream);
+  margin-bottom: 2rem;
+}
+
+.hero-title em {
+  display: block;
+  font-style: italic;
+  color: var(--color-gold);
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(240,224,192,0.7);
+  margin-bottom: 3rem;
+  max-width: 480px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-body);
+}
+
+.btn-primary {
+  background: var(--color-gold);
+  color: var(--color-black);
+}
+.btn-primary:hover {
+  background: var(--color-cream);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-cream);
+  border: 1px solid rgba(240,224,192,0.3);
+}
+.btn-ghost:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.btn-sm {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.75rem;
+  background: var(--color-brown);
+  color: var(--color-cream);
+}
+.btn-sm:hover { background: var(--color-gold); color: var(--color-black); }
+
+/* ============================================
+   PRODUCTS SECTION
+   ============================================ */
+.products-section {
+  padding: 8rem 2rem;
+  background: var(--color-dark);
+}
+
+.products-section .section-title {
+  margin-bottom: 4rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.product-card {
+  background: var(--color-black);
+  border: 1px solid rgba(200,136,42,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200,136,42,0.4);
+}
+
+.product-visual {
+  height: 220px;
+  background: linear-gradient(135deg, var(--color-brown) 0%, var(--color-dark) 100%);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+}
+
+.product-roast-badge {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold);
+  padding: 0.3rem 0.7rem;
+}
+
+.product-info {
+  padding: 1.5rem;
+}
+
+.product-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--color-cream);
+  margin-bottom: 0.4rem;
+}
+
+.product-origin {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.product-notes {
+  font-size: 0.85rem;
+  color: rgba(240,224,192,0.5);
+  margin-bottom: 1.5rem;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-price {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--color-cream);
+}
+
+/* ============================================
+   STORY SECTION
+   ============================================ */
+.story-section {
+  padding: 8rem 2rem;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.story-image-placeholder {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(135deg, var(--color-brown) 0%, var(--color-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: rgba(200,136,42,0.3);
+}
+
+.story-text {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: rgba(240,224,192,0.7);
+  margin-bottom: 1.2rem;
+}
+
+.story-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(200,136,42,0.15);
+}
+
+.stat { display: flex; flex-direction: column; gap: 0.3rem; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--color-gold);
+}
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(240,224,192,0.5);
+}
+
+/* ============================================
+   CONTACT / FOOTER
+   ============================================ */
+.contact-section {
+  padding: 8rem 2rem 4rem;
+  background: var(--color-dark);
+  text-align: center;
+}
+
+.contact-inner {
+  max-width: 600px;
+}
+
+.contact-sub {
+  color: rgba(240,224,192,0.6);
+  margin-bottom: 3rem;
+  line-height: 1.7;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 6rem;
+}
+
+.contact-link {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.contact-link:hover { color: var(--color-cream); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(200,136,42,0.1);
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: rgba(240,224,192,0.3);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+
+  .story-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+  .story-image-placeholder { aspect-ratio: 16/9; }
+
+  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+
+  .hero-section { padding: 7rem 2rem 5rem; }
+}
